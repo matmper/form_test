@@ -1,0 +1,45 @@
+services:
+
+    web:
+        container_name: "form-test-api"
+        build:
+            context: .
+            dockerfile: ./docker/Dockerfile
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./src:/home/node/app
+        networks:
+            - network
+
+    mysql:
+        image: mysql/mysql-server:8.0.23
+        container_name: "form-test-mysql"
+        restart: on-failure
+        tty: true
+        command:
+            - --default-authentication-plugin=mysql_native_password
+            - --explicit_defaults_for_timestamp
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_ROOT_PASSWORD: ${DB_PASS}
+            MYSQL_ROOT_HOST: '%'
+        volumes:
+            - volume_db:/var/lib/mysql
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - network
+
+#Docker Networks
+networks:
+    network:
+        driver: bridge
+        name: "form-test-network"
+
+#Volumes
+volumes:
+    volume_db:
+        name: "form-test-mysql-8"
+        driver: local

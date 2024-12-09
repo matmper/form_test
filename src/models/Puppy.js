@@ -1,21 +1,34 @@
 const { Model, DataTypes } = require('sequelize')
+const sequelize = require('../config/database')
 
 class Puppy extends Model {
-  static init(connection){
-    super.init({
-      name: DataTypes.STRING,
-      gender: DataTypes.STRING,
-      color: DataTypes.STRING,
-      age: DataTypes.STRING,
-      size: DataTypes.STRING,
-    }, {
-      sequelize: connection,
-      schema: 'public',
-      tableName: 'puppies',
-      timestamp: true,
-      underscored: false
-    })
-  }
+  //
 }
+
+Puppy.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+    },
+    gender: {
+      type: DataTypes.STRING,
+    },
+    color: {
+      type: DataTypes.STRING,
+    },
+    age: {
+      type: DataTypes.STRING,
+    },
+    size: {
+      type: DataTypes.STRING,
+    },
+  },
+  { sequelize, tableName: 'puppies', timestamps: true }
+)
 
 module.exports = Puppy
